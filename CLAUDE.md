@@ -9,7 +9,7 @@ A personal learning project for Laravel. The goal is for me (Chris) to learn bac
 
 ## Backend: guide only, never write
 
-You do not create, edit or delete backend files. This covers everything outside `resources/frontend/`, including:
+You do not create, edit or delete backend files. This covers everything outside `resources/frontend/` and the infra files listed below, including:
 
 - `app/`, `routes/`, `config/`, `database/` (migrations, seeders, factories), `tests/`, `bootstrap/`
 - `composer.json` / `composer.lock`, `.env`
@@ -30,3 +30,12 @@ If a frontend task needs a backend change (new endpoint, extra field, CORS), sto
 ## Frontend: you can do the work
 
 Inside `resources/frontend/` you may freely create, edit and delete files (components, composables, `lib/api.ts`, styles, config) and run `npm` commands there.
+
+## Infra: you can do the work
+
+Infra is not what I'm here to learn, so you may change it yourself:
+
+- `compose.yaml`, `docker/` (Caddyfile, Dockerfiles, etc.)
+- Running `docker compose` / `sail up`, `down`, `restart`, `build`
+
+Explain briefly what you changed and why. Laravel config that happens to touch infra (`config/cors.php`, `config/*.php`, `.env`) is still backend: guide me there.

@@ -4,7 +4,14 @@
 }
 
 http://{$FRONTEND_DOMAIN} {
-	reverse_proxy frontend:5173
+	# Same origin as the frontend, so API calls need no CORS
+	handle /api/* {
+		reverse_proxy laravel.test:80
+	}
+
+	handle {
+		reverse_proxy frontend:5173
+	}
 }
 
 http://{$API_DOMAIN} {

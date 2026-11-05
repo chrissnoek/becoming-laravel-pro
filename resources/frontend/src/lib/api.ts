@@ -1,4 +1,4 @@
-const baseUrl = `${import.meta.env.VITE_API_URL}/api`
+const baseUrl = '/api'
 const tokenKey = 'access_token'
 
 export class ApiError extends Error {
@@ -36,11 +36,22 @@ export async function api<T>(path: string, init: RequestInit = {}): Promise<T> {
     }
 
     const response = await fetch(`${baseUrl}${path}`, { ...init, headers })
+    const text = await response.text()
 
-    if (!response.ok) {
-        const body = await response.json().catch(() => ({}))
-        throw new ApiError(response.status, body)
+    let body: unknown = null
+    try {
+        body = text ? JSON.parse(text) : null
+    } catch {
+        if (import.meta.env.DEV) {
+            console.groupCollapsed(`[api] non-JSON response from ${init.method ?? 'GET'} ${path} (${response.status})`)
+            console.log(text)
+            console.groupEnd()
+        }
     }
 
-    return response.json() as Promise<T>
+    if (!response.ok) {
+        throw new ApiError(response.status, (body as ApiError['body']) ?? {})
+    }
+
+    return body as T
 }
