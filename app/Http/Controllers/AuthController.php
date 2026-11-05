@@ -9,6 +9,8 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\JsonResponse;
 use App\Services\PassportTokenService;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class AuthController extends Controller
 {
@@ -68,5 +70,14 @@ class AuthController extends Controller
                 'message' => 'Failed to create token',
             ], 500);
         }
+    }
+
+    public function logout(Request $request): Response
+    {
+        $token = $request->user()->token();
+        $token->refreshToken?->revoke();
+        $token->revoke();
+
+        return response()->noContent();
     }
 }
